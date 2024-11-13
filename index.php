@@ -3,28 +3,31 @@
 // Load file rute
 require 'routes.php';
 
-// Fungsi untuk mencocokkan rute
-function matchRoute($url, $routes)
-{
-    foreach ($routes as $route => $handler) {
-        // Ganti parameter seperti {id} dengan regex
-        $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([a-zA-Z0-9_]+)', $route);
-        $pattern = str_replace('/', '\/', $pattern);
-        $pattern = '/^' . $pattern . '$/';
+// Tangkap URL dan metode HTTP
+$url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '/';
+$httpMethod = $_SERVER['REQUEST_METHOD'];
 
-        if (preg_match($pattern, $url, $matches)) {
-            array_shift($matches); // Hapus hasil pencocokan penuh
-            return ['handler' => $handler, 'params' => $matches];
+// Fungsi untuk mencocokkan rute berdasarkan URL dan metode HTTP
+function matchRoute($url, $httpMethod, $routes)
+{
+    if (isset($routes[$httpMethod])) {
+        foreach ($routes[$httpMethod] as $route => $handler) {
+            // Ganti parameter seperti {id} dengan regex
+            $pattern = preg_replace('/\{([a-zA-Z0-9_]+)\}/', '([a-zA-Z0-9_]+)', $route);
+            $pattern = str_replace('/', '\/', $pattern);
+            $pattern = '/^' . $pattern . '$/';
+
+            if (preg_match($pattern, $url, $matches)) {
+                array_shift($matches); // Hapus hasil pencocokan penuh
+                return ['handler' => $handler, 'params' => $matches];
+            }
         }
     }
     return false;
 }
 
-// Tangkap URL dan buang tanda "/"
-$url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '/';
-
-// Cocokkan URL dengan rute yang telah didefinisikan
-$routeMatch = matchRoute($url, $routes);
+// Cocokkan URL dengan rute yang telah didefinisikan berdasarkan metode HTTP
+$routeMatch = matchRoute($url, $httpMethod, $routes);
 
 if ($routeMatch) {
     $controllerName = $routeMatch['handler']['controller'];
