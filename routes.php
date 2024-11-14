@@ -7,6 +7,6 @@ $routes = [
         'product/create' => ['controller' => 'HomeController', 'method' => 'create'],
     ],
     'POST' => [
-        '/product/store' => ['controller' => 'ProductController', 'method' => 'store'],
+        'register' => ['controller' => 'HomeController', 'method' => 'Register'],
     ]
 ];

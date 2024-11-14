@@ -11,20 +11,12 @@ class HomeController
 
     public function RegisterView()
     {
-
-
         // Panggil view home.index dan kirim data
         view('pages.auth.register');
     }
 
-    public function create()
+    public function Register()
     {
-        $data = [
-            'title' => 'Halaman product create',
-            'description' => 'Selamat datang di product create page'
-        ];
-
-        // Panggil view home.index dan kirim data
-        view('index', $data);
+        echo "ini register";
     }
 }

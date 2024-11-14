@@ -7,7 +7,7 @@ include_once 'views/partials/header.php';
 <div class="login-page">
     <div class="login-container">
         <h1>Register</h1>
-        <form action="login_process.php" method="post">
+        <form action="register" method="post">
             <div class="form-group">
                 <label for="email" class="sr-only">Email</label>
                 <input type="text" id="email" name="email" class="form-control" placeholder="Email" required autocomplete="off" required>
