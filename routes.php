@@ -2,10 +2,9 @@
 
 $routes = [
     'GET' => [
-        '/' => ['controller' => 'HomeController', 'method' => 'index'],
-        '/about' => ['controller' => 'HomeController', 'method' => 'about'],
-        '/product' => ['controller' => 'ProductController', 'method' => 'index'],
-        '/product/create' => ['controller' => 'ProductController', 'method' => 'create'],
+        '/' => ['controller' => 'HomeController', 'method' => 'LoginView'],
+        'register' => ['controller' => 'HomeController', 'method' => 'RegisterView'],
+        'product/create' => ['controller' => 'HomeController', 'method' => 'create'],
     ],
     'POST' => [
         '/product/store' => ['controller' => 'ProductController', 'method' => 'store'],
