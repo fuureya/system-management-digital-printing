@@ -1,31 +1,28 @@
 <?php
 
-function loadEnv($filePath = '.env')
+function loadEnv($path)
 {
-    if (!file_exists($filePath)) {
-        throw new Exception("File .env tidak ditemukan.");
+    if (!file_exists($path)) {
+        throw new Exception(".env file not found at: " . $path);
     }
 
-    // Baca setiap baris dalam file .env
-    $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     foreach ($lines as $line) {
-        // Abaikan baris komentar
+        // Abaikan baris yang dimulai dengan `#` sebagai komentar
         if (strpos(trim($line), '#') === 0) {
             continue;
         }
 
-        // Pisahkan key dan value
-        list($key, $value) = explode('=', $line, 2);
-
-        // Hapus spasi atau tanda kutip pada value
-        $key = trim($key);
+        // Memecah variabel dan nilainya
+        list($name, $value) = explode('=', $line, 2);
+        $name = trim($name);
         $value = trim($value);
-        $value = trim($value, '"'); // Menghapus tanda kutip ganda di sekitar value
 
-        // Set sebagai variabel environment
-        putenv("$key=$value");
-
-        // Definisikan juga sebagai variabel global jika diperlukan
-        $_ENV[$key] = $value;
+        // Set ke environment menggunakan putenv() atau $_ENV
+        putenv("$name=$value");
+        $_ENV[$name] = $value;
     }
 }
+
+// Panggil fungsi loadEnv() untuk memuat .env
+loadEnv(__DIR__ . '../../../.env');
