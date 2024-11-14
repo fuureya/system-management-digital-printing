@@ -12,12 +12,10 @@ function loadEnv($path)
         if (strpos(trim($line), '#') === 0) {
             continue;
         }
-
         // Memecah variabel dan nilainya
         list($name, $value) = explode('=', $line, 2);
         $name = trim($name);
         $value = trim($value);
-
         // Set ke environment menggunakan putenv() atau $_ENV
         putenv("$name=$value");
         $_ENV[$name] = $value;
