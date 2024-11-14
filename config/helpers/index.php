@@ -4,7 +4,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-function kirimEmail($email, $vcode)
+function kirimEmail($email, $username)
 {
     require_once __DIR__ .  '../../../PHPMailer/PHPMailer.php';
     require_once __DIR__ .  '../../../PHPMailer/SMTP.php';
@@ -31,9 +31,9 @@ function kirimEmail($email, $vcode)
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'Verifikasi Pendaftaran Email';
         $mail->Body    = "Hai bung hari yang cerah! Klik link di bawah ini untuk melakukan verfikasi
-        <a href='http://localhost/dgprint/admin/verify.php?email=$email&vcode=$vcode'>Verifikasi Akun</a>";
+        <a href='http://localhost/digital-printing/verifikasi/$username'>Verifikasi Akun</a>";
         -$mail->send();
-        echo 'Message has been sent';
+        return header('Location: ./');
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }

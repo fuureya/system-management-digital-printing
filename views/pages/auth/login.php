@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once 'views/partials/header.php';
 
 ?>
@@ -7,7 +7,13 @@ include_once 'views/partials/header.php';
 <div class="login-page">
     <div class="login-container">
         <h1>Login</h1>
-        <form action="login_process.php" method="post">
+        <?php
+        if (isset($_SESSION['error'])) {
+            echo "<script>alert('" . $_SESSION['error'] . "');</script>";
+            unset($_SESSION['error']); // Hapus pesan setelah ditampilkan
+        }
+        ?>
+        <form action="login" method="POST">
             <div class="form-group">
                 <label for="username" class="sr-only">Username</label>
                 <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autocomplete="off" required>

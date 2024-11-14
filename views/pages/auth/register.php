@@ -21,7 +21,7 @@ include_once 'views/partials/header.php';
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password" autocomplete="off" required>
             </div>
             <button type="submit" class="btn btn-login btn-block">Login</button>
-            <p class="text-muted mt-3">Sudah punya akun? <a href="login" style="color: #007bff;">Login dulu</a>.</p>
+            <p class="text-muted mt-3">Sudah punya akun? <a href="./" style="color: #007bff;">Login dulu</a>.</p>
         </form>
     </div>
 </div>

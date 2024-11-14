@@ -16,6 +16,46 @@ class HomeController
     {
         view('pages.auth.login');
     }
+
+    public function LoginProcess()
+    {
+        require_once __DIR__ . '../../config/core/db.php';
+
+        session_start(); // Pastikan session_start() dipanggil di awal
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        // Query untuk memverifikasi pengguna
+        $verify = mysqli_query($db, "SELECT * FROM users WHERE username = '$username'");
+        $result = mysqli_num_rows($verify);
+
+        if ($result > 0) {
+            $user = mysqli_fetch_assoc($verify);
+            if (password_verify($password, $user['password'])) {
+                if ($user['status'] == 1) {
+                    $_SESSION['user'] = $user;
+                    header('Location: ./dashboard');
+                    exit();
+                } else {
+                    $_SESSION['error'] = "Akun belum aktif";
+                    header('Location: /digital-printing');
+                    exit();
+                }
+            } else {
+                $_SESSION['error'] = "Username/Password tidak terdaftar/salah";
+                header('Location: /digital-printing');
+                exit();
+            }
+        } else {
+            $_SESSION['error'] = "Username/Password tidak terdaftar/salah";
+            header('Location: /digital-printing');
+            exit();
+        }
+    }
+
+
+
     public function RegisterView()
     {
         // Panggil view home.index dan kirim data
@@ -36,20 +76,18 @@ class HomeController
         // Query untuk insert data
         $insert = "INSERT INTO users (username, email, password, role_id) VALUES ('$username', '$email', '$hashed_password', 2)";
         mysqli_query($db, $insert);
-        kirimEmail($email, uniqid(5));
+        kirimEmail($email, $username);
     }
 
-    public function Verifikasi($token, $email)
+    public function Verifikasi($params)
     {
         require_once __DIR__ . '../../config/core/db.php';
-
-        echo $email;
-        // if ($token && $email) {
-        //     $verify = "SELECT COUNT(*) FROM users WHERE email = $email";
-        //     if (mysqli_query($db, $verify) > 0) {
-        //         echo $verify;
-        //     }
-        //     $update_query = "UPDATE users SET status = 1 WHERE email = $email";
-        // }
+        $verify = mysqli_query($db, "SELECT * FROM users WHERE username = '$params'");
+        $result = mysqli_num_rows($verify);
+        if ($result > 0) {
+            // update status user
+            mysqli_query($db, "UPDATE users SET status = 1 WHERE username = '$params'");
+            header('location: /digital-printing');
+        }
     }
 }
