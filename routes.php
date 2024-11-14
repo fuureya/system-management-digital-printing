@@ -4,7 +4,7 @@ $routes = [
     'GET' => [
         '/' => ['controller' => 'HomeController', 'method' => 'LoginView'],
         'register' => ['controller' => 'HomeController', 'method' => 'RegisterView'],
-        'product/create' => ['controller' => 'HomeController', 'method' => 'create'],
+        'verifikasi/{token}/{email}' => ['controller' => 'HomeController', 'method' => 'Verifikasi'],
     ],
     'POST' => [
         'register' => ['controller' => 'HomeController', 'method' => 'Register'],
