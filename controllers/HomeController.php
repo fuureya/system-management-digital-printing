@@ -35,7 +35,12 @@ class HomeController
             if (password_verify($password, $user['password'])) {
                 if ($user['status'] == 1) {
                     $_SESSION['user'] = $user;
-                    header('Location: ./dashboard');
+                    $_SESSION['role_id'] = $user["role_id"];
+                    if ($_SESSION['role_id'] == 1) {
+                        header('Location: ./dashboard-admin');
+                    } elseif ($_SESSION['role_id'] == 2) {
+                        header('Location: ./dashboard');
+                    }
                     exit();
                 } else {
                     $_SESSION['error'] = "Akun belum aktif";
@@ -89,5 +94,15 @@ class HomeController
             mysqli_query($db, "UPDATE users SET status = 1 WHERE username = '$params'");
             header('location: /digital-printing');
         }
+    }
+
+    public function AdminView()
+    {
+        view('pages.dashboard.admin');
+    }
+
+    public function UserView()
+    {
+        view('pages.dashboard.user');
     }
 }
